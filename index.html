@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500;1,600&family=Jost:wght@400;500&family=Marcellus&family=Pinyon+Script&display=swap">
 <style>
 /* Layout: one velvet-bound book centred on a dark table; leaves hinge on the left edge and turn in 3D. */
 :root{
@@ -24,6 +24,8 @@
   --ink-soft:#7d5a3a;   /* supporting lines */
   --script:"Pinyon Script","Snell Roundhand","Apple Chancery",cursive;
   --serif:"Cormorant Garamond","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --display:"Marcellus","Cinzel","Trajan Pro",Georgia,serif;
+  --caps:"Jost","Avenir Next","Century Gothic","Gill Sans",sans-serif;
   --pw:320px; --ph:450px;
   --ease:cubic-bezier(.45,.05,.2,1);
 }
@@ -182,17 +184,18 @@ body{
 @keyframes enter-lace{from{opacity:0;scale:.9}}
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.16) translate(-2%,1.5%)}}
 @keyframes halo{from{box-shadow:0 0 0 .5em rgba(235,208,144,.14),0 0 2em rgba(255,200,100,.25)}to{box-shadow:0 0 0 1.1em rgba(235,208,144,.2),0 0 4.5em rgba(255,200,100,.6)}}
-.info{position:absolute;left:50%;translate:-50% 0;z-index:10;display:flex;flex-direction:column;align-items:center;text-align:center;color:var(--c);font-weight:600}
-.info .ttl{margin:0;font-weight:500;font-size:calc(var(--pw)*var(--ts,.15));line-height:1;color:var(--ct);white-space:nowrap}
+.info{position:absolute;left:50%;translate:-50% 0;z-index:10;display:flex;flex-direction:column;align-items:center;text-align:center;color:var(--c)}
+.info .ttl{margin:0;font-family:var(--display);font-weight:400;font-size:calc(var(--pw)*var(--ts,.125));line-height:1;letter-spacing:.02em;color:var(--ct);white-space:nowrap}
 .info .ttl span{display:inline-block}
-.info .ttl.script{font-family:var(--script);font-weight:400;padding:0 .15em}
-.when{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.7em;width:100%;margin-top:calc(var(--pw)*.025);font-size:calc(var(--pw)*var(--fs,.034));letter-spacing:.07em;text-transform:uppercase}
-.when .side{border-block:1px solid currentColor;padding:.6em 0;white-space:nowrap}
-.when .date{display:flex;flex-direction:column;line-height:1}
-.when .date b{font-size:.95em;letter-spacing:.12em}
-.when .date i{font-style:normal;font-weight:500;font-size:1.9em;letter-spacing:0}
-.info p{margin:calc(var(--pw)*.02) 0 0;font-size:calc(var(--pw)*var(--bs,.04));line-height:1.25;text-wrap:balance}
-.info svg{display:block;margin-top:calc(var(--pw)*.018);overflow:visible}
+.when{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:1.1em;width:100%;margin-top:calc(var(--pw)*.032);
+  font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--fs,.026));letter-spacing:.2em;line-height:1.55;text-transform:uppercase}
+.when .side{display:flex;align-items:center;justify-content:center;padding:.75em 0 .75em .2em;border-block:1px solid color-mix(in srgb,currentColor 55%,transparent)}
+.when .date{display:flex;flex-direction:column;align-items:center;line-height:1.25;padding-left:.2em}
+.when .date i{font-family:var(--serif);font-style:normal;font-weight:500;font-size:3.3em;line-height:.95;letter-spacing:0;margin-left:-.06em;color:var(--ct);font-variant-numeric:lining-nums}
+.info .then{margin:calc(var(--pw)*.03) 0 0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:calc(var(--pw)*.044);line-height:1.2}
+.info .venue{margin:calc(var(--pw)*.026) 0 0;font-family:var(--display);font-size:calc(var(--pw)*.043);line-height:1.2;letter-spacing:.02em}
+.info .addr{margin:calc(var(--pw)*.012) 0 0;padding-left:.18em;font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--fs,.026));letter-spacing:.18em;line-height:1.6;text-transform:uppercase;text-wrap:balance}
+.info svg{display:block;margin-top:calc(var(--pw)*.024);overflow:visible}
 .dr{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-dasharray:1}
 .leaf.play .info .ttl span{animation:letter 1.6s ease-out both;animation-delay:calc(.7s + var(--i)*.1s)}
 .leaf.play .info .ttl.script{animation:write 1.6s var(--ease) .9s both}
@@ -200,7 +203,8 @@ body{
 .leaf.play .info .when .r{animation:growR 1.6s var(--ease) 1.6s both}
 .leaf.play .info .when .date{animation:pop 1.4s ease-out 1.5s both}
 .leaf.play .info p,.leaf.play .info svg{animation:rise 1.4s ease 2.3s both}
-.leaf.play .info p.where{animation-delay:2.8s}
+.leaf.play .info p.venue{animation-delay:2.8s}
+.leaf.play .info p.addr{animation-delay:3.1s}
 .leaf.play .info .dr{animation:draw 2.4s var(--ease) 2.5s both}
 @keyframes letter{from{opacity:0;translate:0 .18em;filter:blur(5px)}}
 @keyframes growL{from{clip-path:inset(0 0 0 100%)}to{clip-path:inset(0)}}
@@ -358,10 +362,10 @@ const beads=(cx,cy,n,rad,r,attr='')=>Array.from({length:n},(_,i)=>{const a=i*2*M
 /* ---------- event cards: the supplied artwork in layers, with live text set on top ---------- */
 /* layer tuple: [file, x, y, w, h, css custom properties, extra] in card units; strings are raw markup */
 const drop=(a,d,ph,dl)=>`--in:enter-drop;--loop:sway;--a:${a}deg;--d:${d}s;--ph:-${ph}s;--dl:${dl}s`;
-const info=o=>`<div class="info" style="top:${o.top}%;width:${o.w}%;--c:${o.c};--ct:${o.ct||o.c};--fs:${o.fs||.033};--ts:${o.ts||.13};--bs:${o.bs||.039}">`+
+const info=o=>`<div class="info" style="top:${o.top}%;width:${o.w}%;--c:${o.c};--ct:${o.ct||o.c};${o.ts?`--ts:${o.ts};`:''}${o.fs?`--fs:${o.fs};`:''}">`+
   `<h2 class="ttl">${o.title}</h2>`+
-  `<div class="when"><span class="side l">${o.day}</span><span class="date"><b>Dec</b><i>${o.dd}</i><b>2026</b></span><span class="side r">${o.time}</span></div>`+
-  (o.then?`<p>${o.then}</p>`:'')+(o.mid||'')+`<p class="where">${o.where}</p></div>`;
+  `<div class="when"><span class="side l">${o.day}</span><span class="date"><b>Dec</b><i>${o.dd}</i><b>2026</b></span><span class="side r"><span>${o.time}</span></span></div>`+
+  (o.then?`<p class="then">${o.then}</p>`:'')+(o.mid||'')+`<p class="venue">${o.venue}</p><p class="addr">${o.addr}</p></div>`;
 const rule=`<svg viewBox="0 0 200 8" style="width:72%" aria-hidden="true"><path class="dr" pathLength="1" d="M90 4H0"/><path class="dr" pathLength="1" d="M110 4H200"/><path d="M100 .5l6 3.5-6 3.5-6-3.5z" fill="currentColor"/></svg>`;
 const kolam=`<svg viewBox="-80 -13 160 26" style="width:44%" aria-hidden="true"><path class="dr" pathLength="1" d="M-66 0q11 -20 22 0t22 0t22 0t22 0t22 0t22 0"/><path class="dr" pathLength="1" d="M-66 0q11 20 22 0t22 0t22 0t22 0t22 0t22 0"/>${[0,1,2,3,4,5].map(k=>`<circle cx="${-55+22*k}" cy="0" r="1.6" fill="currentColor"/>`).join('')}</svg>`;
 const flourish=`<svg viewBox="0 0 200 24" style="width:56%;color:#a8835a" aria-hidden="true"><path class="dr" pathLength="1" d="M100 13c-12 -14 -32 -12 -44 -1s-32 9 -44 -3"/><path class="dr" pathLength="1" d="M100 13c12 -14 32 -12 44 -1s32 9 44 -3"/><path class="dr" pathLength="1" d="M100 13c-8 8 -20 9 -30 4M100 13c8 8 20 9 30 4"/><circle cx="100" cy="12" r="2.6" fill="currentColor"/></svg>`;
@@ -379,7 +383,7 @@ const CARDS=[
    ['umbrella',80.73,253.64,120,165.55,'--in:enter-rise;--loop:sway;--a:1.1deg;--d:6.5s;--o:50% 100%;--dl:.5s'],
    ['leafL',-.55,232.64,102.27,186.55,'--in:enter-left;--loop:sway;--a:1.3deg;--d:5.6s;--o:0% 100%;--s:1.05;--dl:.35s'],
    ['leafR',207.27,252,90.82,167.18,'--in:enter-right;--loop:sway;--a:1.3deg;--d:6.4s;--ph:-2s;--o:100% 100%;--s:1.05;--dl:.45s'],
-   info({top:20,w:58,c:'#597c27',ct:'#e8497f',title:'Haldi',day:'Thursday',dd:'03',time:'10 AM onwards',then:'Followed by lunch',where:'Leela Palace, HAL Old Airport Rd, Kodihalli, Bengaluru'}),
+   info({top:18.6,w:59,c:'#4f7023',ct:'#e8497f',title:'Haldi',day:'Thursday',dd:'03',time:'10 AM<br>onwards',then:'Followed by lunch',venue:'Leela Palace',addr:'HAL Old Airport Rd, Kodihalli, Bengaluru'}),
   ]},
  {id:'mehendi',W:297.75,H:419.25,
   fx:{petals:{n:8,colors:['#ffd1dc','#f8a9c0','#fbe3ea'],wind:-3,size:.7},dust:{n:8,color:'255,214,140'}},
@@ -391,7 +395,7 @@ const CARDS=[
    ['string',-.55,-.55,154.09,141,'--in:enter-drop;--dl:.2s'],
    ['lanternA',-.55,-.55,154.09,141,'--a:2.2deg;--d:4.6s;--o:31% 31.9%;--dl:.3s','glow'],
    ['lanternB',-.55,-.55,154.09,141,'--a:1.8deg;--d:5.4s;--ph:-2s;--o:80.2% 0%;--dl:.2s','glow'],
-   info({top:34.9,w:60,c:'#ebd090',title:'Mehendi',day:'Thursday',dd:'03',time:'05 PM onwards',then:'Followed by dinner',mid:rule,where:'Leela Palace, HAL Old Airport Rd, Kodihalli, Bengaluru'}),
+   info({top:33,w:60,c:'#ebd090',title:'Mehendi',day:'Thursday',dd:'03',time:'5 PM<br>onwards',then:'Followed by dinner',mid:rule,venue:'Leela Palace',addr:'HAL Old Airport Rd, Kodihalli, Bengaluru'}),
   ]},
  {id:'muhurtam',W:297.75,H:453.75,
   fx:{petals:{n:6,colors:['#ffffff','#f7c6d9','#ffcc66'],wind:.3,size:.7},dust:{n:12,color:'255,205,100'}},
@@ -401,7 +405,7 @@ const CARDS=[
    ['leafL',-12.8,54.82,73.09,233.45,'--in:enter-left;--loop:sway;--a:.9deg;--d:6s;--o:0% 0%;--s:1.04;--dl:.3s'],
    ['leafR',239.98,54.82,70.36,233.45,'--in:enter-right;--loop:sway;--a:.9deg;--d:6.8s;--ph:-3s;--o:100% 0%;--s:1.04;--dl:.4s'],
    ['silk',-12.8,-.55,323.35,56.45,'--in:enter-drop;--o:50% 0%;--dl:.1s','sheen'],
-   info({top:18.2,w:80,fs:.03,c:'#ac7034',bs:.037,title:'Muhurtam',day:'Sunday',dd:'06',time:'8:30 AM – 9:30 AM',then:'Followed by lunch',mid:kolam,where:'Sri Bhoga Nandishwara Gudi<br>SH 74, Nandi, Karnataka 562103'}),
+   info({top:16.6,w:72,c:'#9c6226',title:'Muhurtam',day:'Sunday',dd:'06',time:'8:30 AM<br>to 9:30 AM',then:'Followed by lunch',mid:kolam,venue:'Sri Bhoga Nandishwara Gudi',addr:'SH 74, Nandi, Karnataka 562103'}),
   ]},
  {id:'reception',W:297.75,H:419.25,
   fx:{petals:{n:4,colors:['#ffffff','#f4efe2'],wind:.8,size:.7},flies:{n:11,color:'255,240,170'}},
@@ -410,7 +414,7 @@ const CARDS=[
    ['flowersBL',-.55,244.91,110.18,174.27,'--in:enter-rise;--loop:sway;--a:.9deg;--d:6s;--o:8% 100%;--s:1.05;--dl:.4s'],
    ['f11',195.55,37.64,102.55,107.73,'--in:enter-corner;--loop:sway;--a:1.3deg;--d:5.4s;--ph:-1s;--o:100% 12%;--s:1.05;--dl:.45s'],
    ['f12',223.09,-.55,66.82,81.82,'--in:enter-corner;--loop:sway;--a:1.1deg;--d:6.4s;--o:85% 0%;--s:1.06;--dl:.3s'],
-   info({top:37.7,w:54,c:'#740d0a',ts:.125,fs:.0275,title:'Reception',day:'Wednesday',dd:'16',time:'7 PM onwards',mid:flourish,where:'Anantya, Palace Grounds'}),
+   info({top:36.2,w:55,c:'#740d0a',ts:.1,fs:.0245,title:'Reception',day:'Wednesday',dd:'16',time:'7 PM<br>onwards',mid:flourish,venue:'Anantya',addr:'Palace Grounds'}),
    ['seal',132.55,103.36,37.91,38.18,'--in:enter-stamp;--o:50% 50%;--dl:1.2s'],
   ]},
 ];
