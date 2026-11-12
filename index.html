@@ -53,12 +53,9 @@ body{
   transition:transform 1.5s var(--ease);cursor:pointer;user-select:none;-webkit-user-select:none;
 }
 .wide .book.open{transform:translateX(50%)}
-.board,.block,.leaf{position:absolute;inset:0}
-.board{
-  inset:-1.2% -1.6% -1.2% 0;border-radius:3px 9px 9px 3px;transform:translateZ(-2px);
-  background:linear-gradient(90deg,var(--velvet-deep),var(--velvet) 12%,var(--velvet-deep));
-  box-shadow:0 28px 60px -12px rgba(0,0,0,.75),0 8px 18px rgba(0,0,0,.5);
-}
+.stage .book.end{transform:translateX(100%)}
+.book.end .block{opacity:0;transition:opacity .1s 1.5s}
+.block,.leaf{position:absolute;inset:0}
 .block{
   background:var(--paper);transform:translateZ(-1px);
   box-shadow:1px 0 0 #d9ccb0,2px 0 0 #f3ead6,3px 0 0 #c9bb9c,4px 0 0 #f3ead6,5px 0 0 #bfb08f,0 2px 0 #d9ccb0,0 3px 0 #f3ead6;
@@ -76,8 +73,9 @@ body{
 
 /* ---------- cover ---------- */
 .cover .face{border-radius:3px 9px 9px 3px}
-.cover .front{background:var(--velvet);box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
-.cover .front::before{background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(255,255,255,.06) 3.2%,rgba(0,0,0,.28) 4.6%,transparent 7%)}
+.face.velvet{background:var(--velvet);box-shadow:inset 0 0 0 1px rgba(0,0,0,.35),0 28px 60px -12px rgba(0,0,0,.75),0 8px 18px rgba(0,0,0,.5)}
+.rear .face.velvet::before{background:linear-gradient(270deg,rgba(0,0,0,.5),rgba(255,255,255,.06) 3.2%,rgba(0,0,0,.28) 4.6%,transparent 7%)}
+.cover:not(.rear) .face.velvet::before{background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(255,255,255,.06) 3.2%,rgba(0,0,0,.28) 4.6%,transparent 7%)}
 .cover svg.cloth{position:absolute;inset:0;width:100%;height:100%;display:block}
 .seal{
   position:absolute;left:50%;top:50%;width:27%;aspect-ratio:1;translate:-50% -50%;padding:0;border:0;background:none;cursor:pointer;
@@ -95,7 +93,7 @@ body{
 @keyframes breathe{50%{scale:1.045}}
 @keyframes press{40%{scale:.9}}
 @keyframes glint{0%,55%{background-position:120% 0}100%{background-position:-60% 0}}
-.cover .back{
+.face.endpaper{
   background-color:#f3e6cc;
   background-image:
     radial-gradient(circle at 50% 50%,transparent 42%,rgba(122,20,48,.2) 44% 50%,transparent 52%),
@@ -104,7 +102,7 @@ body{
     radial-gradient(circle at 50% 50%,rgba(184,138,44,.35) 0 10%,transparent 12%);
   background-size:calc(var(--pw)*.09) calc(var(--pw)*.09);
   background-position:0 0,0 0,calc(var(--pw)*.045) calc(var(--pw)*.045),calc(var(--pw)*.045) calc(var(--pw)*.045);
-  box-shadow:inset 0 0 0 calc(var(--pw)*.022) var(--velvet-deep),inset 0 0 0 calc(var(--pw)*.026) rgba(184,138,44,.7);
+  box-shadow:inset 0 0 0 calc(var(--pw)*.022) var(--velvet-deep),inset 0 0 0 calc(var(--pw)*.026) rgba(184,138,44,.7),0 28px 60px -12px rgba(0,0,0,.75);
 }
 
 /* ---------- paper ---------- */
@@ -168,7 +166,8 @@ body{
 @keyframes enter-corner{from{opacity:0;translate:5% -5%}}
 @keyframes enter-stamp{from{opacity:0;scale:1.35}}
 @keyframes sway{from{rotate:calc(var(--a,2deg)*-1)}to{rotate:var(--a,2deg)}}
-@keyframes drift{from{transform:translateX(-5%)}to{transform:translateX(6%)}}
+@keyframes drift{from{transform:translate(-8%,4%)}to{transform:translate(34%,-6%)}}
+@keyframes driftR{from{transform:translate(6%,-5%)}to{transform:translate(-36%,6%)}}
 @keyframes lamp{from{filter:drop-shadow(0 0 .3em rgba(255,170,70,.4)) brightness(1)}to{filter:drop-shadow(0 0 .9em rgba(255,195,100,.8)) brightness(1.1)}}
 .glint{
   position:absolute;pointer-events:none;-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:50% 100%;scale:var(--s,1);mix-blend-mode:screen;
@@ -240,12 +239,11 @@ body{
 
   <div class="scene3d">
     <div class="book" id="book">
-      <div class="board"></div>
-      <div class="block"></div>
+            <div class="block"></div>
 
       <!-- Cover: plain velvet and a wax seal. No lettering. -->
       <div class="leaf cover">
-        <div class="face front">
+        <div class="face front velvet">
           <svg class="cloth" viewBox="0 0 600 845" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <radialGradient id="pile" cx="38%" cy="30%" r="85%">
@@ -285,7 +283,7 @@ body{
             </svg>
           </button>
         </div>
-        <div class="face back"></div>
+        <div class="face back endpaper"></div>
       </div>
 
       <!-- Names -->
@@ -374,13 +372,13 @@ const CARDS=[
   fx:{petals:{n:7,colors:['#ff9f1c','#ffbf3c','#f47b20','#f06292'],wind:.4,size:.8},dust:{n:8,color:'255,246,200'}},
   layers:[
    ['base',0,0,297.75,419.25,'--in:none'],
-   ['g0',38.73,-.55,11.73,316.36,drop(.6,7,1.2,.1)],['g1',60.27,-.55,12,120.55,drop(1.5,5.6,.4,.2)],
-   ['g2',85.36,-.55,11.73,73.36,drop(2,5,2.1,.3)],['g3',248.18,-.55,11.73,345.82,drop(.55,7.6,3,.15)],
-   ['g4',223.36,-.55,11.73,120.55,drop(1.5,6,1.7,.25)],['g5',187.09,-.55,12,73.36,drop(2,4.8,.9,.35)],
-   ['g6',120.27,-.55,11.73,55.91,drop(2.3,4.4,2.6,.4)],['g7',156,-.55,11.73,42.55,drop(2.4,4.2,1.1,.45)],
-   ['m0',6.82,.82,19.91,183.55,drop(.5,8,2,.05)],['m1',37.09,-.55,19.64,125.45,drop(.7,7,.6,.12)],
-   ['m2',244.09,-.55,19.91,130.64,drop(.7,7.4,3.3,.12)],['m3',270.82,4.09,19.91,183.82,drop(.5,8.4,1.4,.05)],
-   ['umbrella',80.73,253.64,120,165.55,'--in:enter-rise;--loop:sway;--a:1.1deg;--d:6.5s;--o:50% 100%;--dl:.5s'],
+   ['g0',38.73,-.55,11.73,316.36,drop(1.5,4.6,1.2,.1)],['g1',60.27,-.55,12,120.55,drop(3.2,3.8,.4,.2)],
+   ['g2',85.36,-.55,11.73,73.36,drop(4.4,3.3,2.1,.3)],['g3',248.18,-.55,11.73,345.82,drop(1.4,5,3,.15)],
+   ['g4',223.36,-.55,11.73,120.55,drop(3.2,4.1,1.7,.25)],['g5',187.09,-.55,12,73.36,drop(4.4,3.1,.9,.35)],
+   ['g6',120.27,-.55,11.73,55.91,drop(5,2.9,2.6,.4)],['g7',156,-.55,11.73,42.55,drop(5.4,2.7,1.1,.45)],
+   ['m0',6.82,.82,19.91,183.55,drop(1.3,5.2,2,.05)],['m1',37.09,-.55,19.64,125.45,drop(1.8,4.6,.6,.12)],
+   ['m2',244.09,-.55,19.91,130.64,drop(1.8,4.9,3.3,.12)],['m3',270.82,4.09,19.91,183.82,drop(1.3,5.5,1.4,.05)],
+   ['umbrella',80.73,253.64,120,165.55,'--in:enter-rise;--loop:sway;--a:3.2deg;--d:3.6s;--o:50% 100%;--dl:.5s'],
    ['leafL',-.55,232.64,102.27,186.55,'--in:enter-left;--loop:sway;--a:1.3deg;--d:5.6s;--o:0% 100%;--s:1.05;--dl:.35s'],
    ['leafR',207.27,252,90.82,167.18,'--in:enter-right;--loop:sway;--a:1.3deg;--d:6.4s;--ph:-2s;--o:100% 100%;--s:1.05;--dl:.45s'],
    info({top:18.6,w:59,c:'#4f7023',ct:'#e8497f',title:'Haldi',day:'Thursday',dd:'03',time:'10 AM<br>onwards',then:'Followed by lunch',venue:'Leela Palace',addr:'HAL Old Airport Rd, Kodihalli, Bengaluru'}),
@@ -391,7 +389,7 @@ const CARDS=[
    ['base',0,0,297.75,419.25,'--in:none'],
    ['fansL',-.55,310.91,177,108.27,'--in:enter-rise;--dl:.3s'],['fansR',139.09,310.91,159,108.27,'--in:enter-rise;--dl:.45s'],
    ['blossom',152.45,-.55,145.64,137.73,'--in:enter-corner;--loop:sway;--a:.9deg;--d:6s;--o:100% 0%;--s:1.07;--dl:.3s'],
-   ['cloudL',6.82,216.27,63.82,34.09,'--loop:drift;--d:11s;--dl:.7s'],['cloudR',228.27,160.36,66.27,34.64,'--loop:drift;--d:13s;--ph:-6s;--dl:.8s'],
+   ['cloudL',6.82,216.27,63.82,34.09,'--loop:drift;--d:7s;--dl:.7s'],['cloudR',228.27,160.36,66.27,34.64,'--loop:driftR;--d:8.5s;--ph:-3s;--dl:.8s'],
    ['string',-.55,-.55,154.09,141,'--in:enter-drop;--dl:.2s'],
    ['lanternA',-.55,-.55,154.09,141,'--a:2.2deg;--d:4.6s;--o:31% 31.9%;--dl:.3s','glow'],
    ['lanternB',-.55,-.55,154.09,141,'--a:1.8deg;--d:5.4s;--ph:-2s;--o:80.2% 0%;--dl:.2s','glow'],
@@ -433,6 +431,9 @@ for(const c of CARDS){
   leaf.innerHTML=h;leaf._fx=c.fx;book.appendChild(leaf);
 }
 document.querySelectorAll('.info .ttl').forEach(t=>{t.innerHTML=[...t.textContent].map((ch,i)=>`<span style="--i:${i}">${ch}</span>`).join('')});
+/* back cover: endpaper inside, plain velvet outside */
+{const rear=document.createElement('div');rear.className='leaf cover rear';
+ rear.innerHTML=`<div class="face front endpaper"></div><div class="face back velvet">${$('.cover svg.cloth').outerHTML}</div>`;book.appendChild(rear);}
 $('.names')._fx={petals:{n:6,colors:['#b3123f','#d8436d','#f08aa6','#e7b24c'],wind:.5,size:.85},dust:{n:16,color:'214,160,60'}};
 
 /* ---------- petals, dust, fireflies ---------- */
@@ -479,35 +480,45 @@ leaves.forEach(l=>{if(l._fx)l.fx=new Fx(l.querySelector('.front'),l._fx)});
 const ambient=new Fx($('#ambient'),{dust:{n:30,color:'240,200,120'}});
 
 /* ---------- page turning ---------- */
-let turned=0,hinted=0;
+/* turned = leaves lying on the left. The last page and the back cover turn together, so turned jumps LAST -> N. */
+let turned=0,hinted=0;const LAST=N-2;
 const hint=$('#hint'),nav=$('#nav'),dots=$('#dots'),prevB=$('#prev'),nextB=$('#next');
-const names=['Cover','Sonika and Dilip','Haldi','Mehendi','Muhurtam','Reception'];
-names.forEach((n,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',n);b.onclick=e=>{e.stopPropagation();go(i)};dots.appendChild(b)});
+const names=['Cover','Sonika and Dilip','Haldi','Mehendi','Muhurtam','Reception','Back cover'];
+names.forEach((n,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',n);b.onclick=e=>{e.stopPropagation();go(i===N-1?N:i)};dots.appendChild(b)});
 const rest=(l,i)=>{const t=i<turned;l.style.transform=`translateZ(${t?i+1:N-i}px) rotateY(${t?-180:0}deg)`};
 function sync(){
-  const cur=Math.min(turned,N-1);
+  const cur=turned>=N?-1:turned,dot=turned>=N?N-1:turned;
   leaves.forEach((l,i)=>{
     const was=l.classList.contains('current'),is=i===cur;
     l.classList.toggle('current',is);
     if(is&&!was){l.classList.remove('play');void l.offsetWidth;l.classList.add('play');l.fx&&l.fx.start()}
     if(!is&&was){const fx=l.fx;fx&&setTimeout(()=>{if(!l.classList.contains('current'))fx.stop()},1400)}
   });
-  book.classList.toggle('open',turned>0);
-  nav.hidden=turned===0;hint.hidden=turned>0&&hinted>2;
+  book.classList.toggle('open',turned>0&&turned<N);book.classList.toggle('end',turned>=N);
+  const showHint=turned===0||(hinted<=2&&turned<LAST);
+  hint.hidden=!showHint;nav.hidden=showHint;
   hint.textContent=turned===0?'Tap the seal to open':'Tap the page to turn';
-  if(turned>0&&hinted<=2&&cur<N-1){nav.hidden=true}else if(turned>0){hint.hidden=true;nav.hidden=false}
-  prevB.disabled=turned===0;nextB.disabled=turned>=N-1;
-  [...dots.children].forEach((d,i)=>d.setAttribute('aria-current',i===cur));
+  prevB.disabled=turned===0;nextB.disabled=turned>=N;
+  [...dots.children].forEach((d,i)=>d.setAttribute('aria-current',i===dot));
+}
+function flip(i,fwd){
+  const l=leaves[i];l.classList.remove('flip');void l.offsetWidth;l.classList.add('flip');
+  l.style.transform=`translateZ(${N+2+(fwd?i:N-i)}px) rotateY(${fwd?-180:0}deg)`;
+  clearTimeout(l._t);l._t=setTimeout(()=>{rest(l,i);l.classList.remove('flip')},l.classList.contains('cover')?1750:1300);
 }
 function turn(dir){
-  const i=dir>0?turned:turned-1;if(i<0||i>=N-1)return false;
-  const l=leaves[i];turned+=dir;hinted++;
-  l.classList.remove('flip');void l.offsetWidth;l.classList.add('flip');
-  l.style.transform=`translateZ(${N+2}px) rotateY(${dir>0?-180:0}deg)`;
-  clearTimeout(l._t);l._t=setTimeout(()=>{rest(l,i);l.classList.remove('flip')},i===0?1750:1300);
-  sync();return true;
+  if(dir>0){
+    if(turned>=N)return false;
+    if(turned===LAST){turned=N;flip(LAST,true);setTimeout(()=>flip(N-1,true),reduce?0:420)}
+    else flip(turned++,true);
+  }else{
+    if(turned<=0)return false;
+    if(turned>=N){turned=LAST;flip(N-1,false);setTimeout(()=>flip(LAST,false),reduce?0:520)}
+    else flip(--turned,false);
+  }
+  hinted++;sync();return true;
 }
-function go(n){n=Math.max(0,Math.min(N-1,n));const step=()=>{if(turned===n)return;turn(n>turned?1:-1);setTimeout(step,260)};step()}
+function go(n){const step=()=>{if(turned===n)return;turn(n>turned?1:-1);setTimeout(step,turned>=N||n>=N?700:260)};step()}
 function open(){const s=$('#seal');s.classList.remove('press');void s.offsetWidth;s.classList.add('press');setTimeout(()=>turn(1),reduce?0:260)}
 
 let swipeAt=0;
