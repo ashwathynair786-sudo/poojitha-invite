@@ -54,7 +54,7 @@ body{
 }
 .wide .book.open{transform:translateX(50%)}
 .stage .book.end{transform:translateX(100%)}
-.book.end .block{opacity:0;transition:opacity .1s 1.5s}
+.book.end .block{opacity:0}
 .block,.leaf{position:absolute;inset:0}
 .block{
   background:var(--paper);transform:translateZ(-1px);
@@ -74,8 +74,8 @@ body{
 /* ---------- cover ---------- */
 .cover .face{border-radius:3px 9px 9px 3px}
 .face.velvet{background:var(--velvet);box-shadow:inset 0 0 0 1px rgba(0,0,0,.35),0 28px 60px -12px rgba(0,0,0,.75),0 8px 18px rgba(0,0,0,.5)}
-.rear .face.velvet::before{background:linear-gradient(270deg,rgba(0,0,0,.5),rgba(255,255,255,.06) 3.2%,rgba(0,0,0,.28) 4.6%,transparent 7%)}
-.cover:not(.rear) .face.velvet::before{background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(255,255,255,.06) 3.2%,rgba(0,0,0,.28) 4.6%,transparent 7%)}
+.rearface{inset:-1.2% -1.6% -1.2% 0;border-radius:3px 9px 9px 3px}
+.face.velvet::before{background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(255,255,255,.06) 3.2%,rgba(0,0,0,.28) 4.6%,transparent 7%)}
 .cover svg.cloth{position:absolute;inset:0;width:100%;height:100%;display:block}
 .seal{
   position:absolute;left:50%;top:50%;width:27%;aspect-ratio:1;translate:-50% -50%;padding:0;border:0;background:none;cursor:pointer;
@@ -184,16 +184,16 @@ body{
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.16) translate(-2%,1.5%)}}
 @keyframes halo{from{box-shadow:0 0 0 .5em rgba(235,208,144,.14),0 0 2em rgba(255,200,100,.25)}to{box-shadow:0 0 0 1.1em rgba(235,208,144,.2),0 0 4.5em rgba(255,200,100,.6)}}
 .info{position:absolute;left:50%;translate:-50% 0;z-index:10;display:flex;flex-direction:column;align-items:center;text-align:center;color:var(--c)}
-.info .ttl{margin:0;font-family:var(--display);font-weight:400;font-size:calc(var(--pw)*var(--ts,.125));line-height:1;letter-spacing:.02em;color:var(--ct);white-space:nowrap}
+.info .ttl{margin:0;font-family:var(--display);font-weight:400;font-size:calc(var(--pw)*var(--ts,.125)*var(--k,1));line-height:1;letter-spacing:.02em;color:var(--ct);white-space:nowrap}
 .info .ttl span{display:inline-block}
 .when{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:1.1em;width:100%;margin-top:calc(var(--pw)*.032);
-  font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--fs,.026));letter-spacing:.2em;line-height:1.55;text-transform:uppercase}
+  font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--fs,.026)*var(--k,1));letter-spacing:.2em;line-height:1.55;text-transform:uppercase}
 .when .side{display:flex;align-items:center;justify-content:center;padding:.75em 0 .75em .2em;border-block:1px solid color-mix(in srgb,currentColor 55%,transparent)}
 .when .date{display:flex;flex-direction:column;align-items:center;line-height:1.25;padding-left:.2em}
 .when .date i{font-family:var(--serif);font-style:normal;font-weight:500;font-size:3.3em;line-height:.95;letter-spacing:0;margin-left:-.06em;color:var(--ct);font-variant-numeric:lining-nums}
-.info .then{margin:calc(var(--pw)*.03) 0 0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:calc(var(--pw)*.044);line-height:1.2}
-.info .venue{margin:calc(var(--pw)*.026) 0 0;font-family:var(--display);font-size:calc(var(--pw)*.043);line-height:1.2;letter-spacing:.02em}
-.info .addr{margin:calc(var(--pw)*.012) 0 0;padding-left:.18em;font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--fs,.026));letter-spacing:.18em;line-height:1.6;text-transform:uppercase;text-wrap:balance}
+.info .then{margin:calc(var(--pw)*.03) 0 0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:calc(var(--pw)*.044*var(--k,1));line-height:1.2}
+.info .venue{margin:calc(var(--pw)*.026) 0 0;font-family:var(--display);font-size:calc(var(--pw)*.043*var(--k,1));line-height:1.2;letter-spacing:.02em}
+.info .addr{margin:calc(var(--pw)*.012) 0 0;padding-left:.18em;font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--fs,.026)*var(--k,1));letter-spacing:.18em;line-height:1.6;text-transform:uppercase;text-wrap:balance}
 .info svg{display:block;margin-top:calc(var(--pw)*.024);overflow:visible}
 .dr{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-dasharray:1}
 .leaf.play .info .ttl span{animation:letter 1.6s ease-out both;animation-delay:calc(.7s + var(--i)*.1s)}
@@ -347,11 +347,8 @@ const beads=(cx,cy,n,rad,r,attr='')=>Array.from({length:n},(_,i)=>{const a=i*2*M
     `<path class="ln thin" pathLength="1" d="M93 761V332A207 207 0 0 1 507 332V761Z"/>`;
   const flower=(x,y,i,sc=1)=>`<g class="bloom" style="--i:${i}" transform="translate(${x} ${y}) scale(${sc})"><g>`+
     ring(0,0,10,5,27,8.5,0,G)+ring(0,0,10,4,15,4,18,G)+`<circle class="gf" r="5"/></g></g>`;
-  const sprig=(x,y,i,flip)=>`<g class="bloom" style="--i:${i}" transform="translate(${x} ${y}) scale(${flip} 1)"><g>`+
-    `<path class="ln thin" d="M0 0C30 -6 52 8 70 34"/>`+[[18,-3,40],[36,4,60],[52,16,80]].map(([a,b,r])=>
-    `<path ${G} d="${pet(17,5)}" transform="translate(${a} ${b}) rotate(${r-70})"/><path ${G} d="${pet(17,5)}" transform="translate(${a} ${b}) rotate(${r+60})"/>`).join('')+`</g></g>`;
-  s+=flower(300,114,0)+flower(78,84,2,.8)+flower(522,84,3,.8)+sprig(104,92,4,1)+sprig(496,92,5,-1)+flower(300,772,6,.55);
-  s+=`<g class="bloom" style="--i:7">${beads(300,114,12,44,2,'class="gf"')}</g>`;
+  s+=flower(300,114,0)+flower(300,772,2,.55);
+  s+=`<g class="bloom" style="--i:1">${beads(300,114,12,44,2,'class="gf"')}</g>`;
   $('#frame').innerHTML=s;
   const mark=`<svg class="mark" viewBox="-60 -60 120 120" aria-hidden="true">${ring(0,0,12,8,40,11)}${ring(0,0,12,8,22,5,15)}<circle r="8"/><circle r="54"/></svg>`;
   $('.names .back').innerHTML=mark;
@@ -360,7 +357,7 @@ const beads=(cx,cy,n,rad,r,attr='')=>Array.from({length:n},(_,i)=>{const a=i*2*M
 /* ---------- event cards: the supplied artwork in layers, with live text set on top ---------- */
 /* layer tuple: [file, x, y, w, h, css custom properties, extra] in card units; strings are raw markup */
 const drop=(a,d,ph,dl)=>`--in:enter-drop;--loop:sway;--a:${a}deg;--d:${d}s;--ph:-${ph}s;--dl:${dl}s`;
-const info=o=>`<div class="info" style="top:${o.top}%;width:${o.w}%;--c:${o.c};--ct:${o.ct||o.c};${o.ts?`--ts:${o.ts};`:''}${o.fs?`--fs:${o.fs};`:''}">`+
+const info=o=>`<div class="info" style="top:${o.top}%;width:${o.w}%;--c:${o.c};--ct:${o.ct||o.c};${o.ts?`--ts:${o.ts};`:''}${o.fs?`--fs:${o.fs};`:''}${o.k?`--k:${o.k};`:''}">`+
   `<h2 class="ttl">${o.title}</h2>`+
   `<div class="when"><span class="side l">${o.day}</span><span class="date"><b>Dec</b><i>${o.dd}</i><b>2026</b></span><span class="side r"><span>${o.time}</span></span></div>`+
   (o.then?`<p class="then">${o.then}</p>`:'')+(o.mid||'')+`<p class="venue">${o.venue}</p><p class="addr">${o.addr}</p></div>`;
@@ -403,7 +400,7 @@ const CARDS=[
    ['leafL',-12.8,54.82,73.09,233.45,'--in:enter-left;--loop:sway;--a:.9deg;--d:6s;--o:0% 0%;--s:1.04;--dl:.3s'],
    ['leafR',239.98,54.82,70.36,233.45,'--in:enter-right;--loop:sway;--a:.9deg;--d:6.8s;--ph:-3s;--o:100% 0%;--s:1.04;--dl:.4s'],
    ['silk',-12.8,-.55,323.35,56.45,'--in:enter-drop;--o:50% 0%;--dl:.1s','sheen'],
-   info({top:16.6,w:72,c:'#9c6226',title:'Muhurtam',day:'Sunday',dd:'06',time:'8:30 AM<br>to 9:30 AM',then:'Followed by lunch',mid:kolam,venue:'Sri Bhoga Nandishwara Gudi',addr:'SH 74, Nandi, Karnataka 562103'}),
+   info({top:18.6,w:66,k:.86,c:'#9c6226',title:'Muhurtam',day:'Sunday',dd:'06',time:'8:30 AM<br>to 9:30 AM',then:'Followed by lunch',mid:kolam,venue:'Sri Bhoga Nandishwara Gudi',addr:'SH 74, Nandi, Karnataka 562103'}),
   ]},
  {id:'reception',W:297.75,H:419.25,
   fx:{petals:{n:4,colors:['#ffffff','#f4efe2'],wind:.8,size:.7},flies:{n:11,color:'255,240,170'}},
@@ -427,13 +424,10 @@ for(const c of CARDS){
     h+=`<img class="ly ${cls==='glow'?'glow':''}" src="assets/${c.id}/${n}.webp" alt="" draggable="false" style="${b}${css}">`;
     if(cls==='sheen')h+=`<div class="glint" style="${b}${n==='temple'?'--s:1.083 1;':''}-webkit-mask-image:url(assets/${c.id}/${n}.webp);mask-image:url(assets/${c.id}/${n}.webp)"></div>`;
   }
-  h+=`</div></div><div class="face back paper">${$('.names .back').innerHTML}</div>`;
+  h+=`</div></div>`+(c===CARDS[CARDS.length-1]?`<div class="face back velvet rearface">${$('.cover svg.cloth').outerHTML}</div>`:`<div class="face back paper">${$('.names .back').innerHTML}</div>`);
   leaf.innerHTML=h;leaf._fx=c.fx;book.appendChild(leaf);
 }
 document.querySelectorAll('.info .ttl').forEach(t=>{t.innerHTML=[...t.textContent].map((ch,i)=>`<span style="--i:${i}">${ch}</span>`).join('')});
-/* back cover: endpaper inside, plain velvet outside */
-{const rear=document.createElement('div');rear.className='leaf cover rear';
- rear.innerHTML=`<div class="face front endpaper"></div><div class="face back velvet">${$('.cover svg.cloth').outerHTML}</div>`;book.appendChild(rear);}
 $('.names')._fx={petals:{n:6,colors:['#b3123f','#d8436d','#f08aa6','#e7b24c'],wind:.5,size:.85},dust:{n:16,color:'214,160,60'}};
 
 /* ---------- petals, dust, fireflies ---------- */
@@ -480,14 +474,14 @@ leaves.forEach(l=>{if(l._fx)l.fx=new Fx(l.querySelector('.front'),l._fx)});
 const ambient=new Fx($('#ambient'),{dust:{n:30,color:'240,200,120'}});
 
 /* ---------- page turning ---------- */
-/* turned = leaves lying on the left. The last page and the back cover turn together, so turned jumps LAST -> N. */
-let turned=0,hinted=0;const LAST=N-2;
+/* turned = leaves lying on the left. With all N turned the book is closed, showing the velvet reverse of the last page. */
+let turned=0,hinted=0;const LAST=N-1;
 const hint=$('#hint'),nav=$('#nav'),dots=$('#dots'),prevB=$('#prev'),nextB=$('#next');
 const names=['Cover','Sonika and Dilip','Haldi','Mehendi','Muhurtam','Reception','Back cover'];
-names.forEach((n,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',n);b.onclick=e=>{e.stopPropagation();go(i===N-1?N:i)};dots.appendChild(b)});
+names.forEach((n,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',n);b.onclick=e=>{e.stopPropagation();go(i)};dots.appendChild(b)});
 const rest=(l,i)=>{const t=i<turned;l.style.transform=`translateZ(${t?i+1:N-i}px) rotateY(${t?-180:0}deg)`};
 function sync(){
-  const cur=turned>=N?-1:turned,dot=turned>=N?N-1:turned;
+  const cur=turned>=N?-1:turned,dot=turned;
   leaves.forEach((l,i)=>{
     const was=l.classList.contains('current'),is=i===cur;
     l.classList.toggle('current',is);
@@ -507,18 +501,11 @@ function flip(i,fwd){
   clearTimeout(l._t);l._t=setTimeout(()=>{rest(l,i);l.classList.remove('flip')},l.classList.contains('cover')?1750:1300);
 }
 function turn(dir){
-  if(dir>0){
-    if(turned>=N)return false;
-    if(turned===LAST){turned=N;flip(LAST,true);setTimeout(()=>flip(N-1,true),reduce?0:420)}
-    else flip(turned++,true);
-  }else{
-    if(turned<=0)return false;
-    if(turned>=N){turned=LAST;flip(N-1,false);setTimeout(()=>flip(LAST,false),reduce?0:520)}
-    else flip(--turned,false);
-  }
+  if(dir>0){if(turned>=N)return false;flip(turned++,true)}
+  else{if(turned<=0)return false;flip(--turned,false)}
   hinted++;sync();return true;
 }
-function go(n){const step=()=>{if(turned===n)return;turn(n>turned?1:-1);setTimeout(step,turned>=N||n>=N?700:260)};step()}
+function go(n){const step=()=>{if(turned===n)return;turn(n>turned?1:-1);setTimeout(step,260)};step()}
 function open(){const s=$('#seal');s.classList.remove('press');void s.offsetWidth;s.classList.add('press');setTimeout(()=>turn(1),reduce?0:260)}
 
 let swipeAt=0;
