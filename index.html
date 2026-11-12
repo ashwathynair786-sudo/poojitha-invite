@@ -481,40 +481,26 @@ const leaves=[...book.querySelectorAll('.leaf')],N=leaves.length;
 leaves.forEach(l=>{if(l._fx)l.fx=new Fx(l.querySelector('.front'),l._fx)});
 const ambient=new Fx($('#ambient'),{dust:{n:30,color:'240,200,120'}});
 
-/* ---------- music: the supplied song, cued to the pages ---------- */
-/* Each page owns a section of the song. Turning to a page crossfades to the start of its section,
-   unless the song is already inside it. The song fades out when the book is closed. */
+/* ---------- music: the supplied track, played straight through and looped ---------- */
+/* assets/music.mp3 is the track cut to begin at its 17th second. It starts on the first tap. */
 const music=(()=>{
-  const btn=$('#sound'),CUES=[0,0,11.5,60.1,111.6,170.9],LEVEL=.85;   // seconds, by page: cover, names, haldi, mehendi, muhurtam, reception
-  const el=[0,1].map(()=>{const a=new Audio('assets/music.mp3');a.preload='auto';return a}),gain=[];
-  let ctx,cur=0,on=false,wanted=true,live=false,pg=0,pages=6;
+  const btn=$('#sound'),LEVEL=.85,au=new Audio('assets/music.mp3');au.preload='auto';au.loop=true;
+  let ctx,gain,on=false,wanted=true;
   const init=()=>{if(ctx!==undefined)return;
-    try{ctx=new (window.AudioContext||window.webkitAudioContext)();
-      el.forEach((a,i)=>{const src=ctx.createMediaElementSource(a);gain[i]=ctx.createGain();gain[i].gain.value=0;src.connect(gain[i]);gain[i].connect(ctx.destination)})}
-    catch(e){ctx=null;el.forEach(a=>a.volume=0)}};
-  const vol=(i,to,ms)=>{
-    if(ctx){const t=ctx.currentTime,g=gain[i].gain;g.cancelScheduledValues(t);g.setValueAtTime(g.value,t);g.linearRampToValueAtTime(to,t+ms/1000)}
-    else{const a=el[i],from=a.volume,t0=performance.now();clearInterval(a._r);
-      a._r=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/ms);a.volume=from+(to-from)*k;if(k===1)clearInterval(a._r)},40)}};
-  const play=i=>{const p=el[i].play();p&&p.catch&&p.catch(()=>{})};
-  const seek=(i,t)=>{try{el[i].currentTime=t}catch(e){}};
+    try{ctx=new (window.AudioContext||window.webkitAudioContext)();const src=ctx.createMediaElementSource(au);
+      gain=ctx.createGain();gain.gain.value=0;src.connect(gain);gain.connect(ctx.destination)}
+    catch(e){ctx=null;au.volume=0}};
+  const vol=(to,ms)=>{
+    if(ctx){const t=ctx.currentTime,g=gain.gain;g.cancelScheduledValues(t);g.setValueAtTime(g.value,t);g.linearRampToValueAtTime(to,t+ms/1000)}
+    else{const from=au.volume,t0=performance.now();clearInterval(au._r);
+      au._r=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/ms);au.volume=from+(to-from)*k;if(k===1)clearInterval(au._r)},40)}};
   const paint=()=>btn.setAttribute('aria-pressed',on);
-  const start=()=>{if(on)return;init();ctx&&ctx.resume();on=true;paint();
-    if(live){play(cur);vol(cur,LEVEL,1500)}
-    else el.forEach((a,i)=>{const p=a.play();p&&p.then&&p.then(()=>{if(!(on&&live&&i===cur))a.pause()}).catch(()=>{})})};  // unlock both players inside the tap
-  const stop=()=>{if(!on)return;on=false;paint();vol(cur,0,500);const c=cur;setTimeout(()=>{if(!on)el[c].pause()},600)};
-  el.forEach((a,i)=>a.addEventListener('ended',()=>{if(i===cur&&on&&live){seek(i,CUES[pg]||0);play(i)}}));
+  const start=()=>{if(on)return;init();ctx&&ctx.resume();on=true;paint();vol(LEVEL,1500);
+    const p=au.play();p&&p.catch&&p.catch(()=>{on=false;paint()})};
+  const stop=()=>{if(!on)return;on=false;paint();vol(0,500);setTimeout(()=>{if(!on)au.pause()},600)};
   btn.onclick=()=>{wanted=!on;on?stop():start()};
-  document.addEventListener('visibilitychange',()=>{if(!on||!live)return;if(document.hidden)el.forEach(a=>a.pause());else play(cur)});
-  return {
-    auto:()=>{if(wanted)start()},
-    page:(p,n)=>{pages=n;const was=live;live=p>0&&p<n;if(p===pg&&was===live)return;pg=p;
-      if(!live){if(was){vol(cur,0,1200);const c=cur;setTimeout(()=>{if(!live)el[c].pause()},1300)}return}
-      const target=CUES[p]||0,next=CUES[p+1]===undefined?Infinity:CUES[p+1],t=el[cur].currentTime;
-      const jump=(!was&&p===1)||t<target-.5||t>=next;
-      if(!on||!was){if(jump)seek(cur,target);if(on){play(cur);vol(cur,LEVEL,1500)}return}
-      if(jump){const o=cur,m=1-cur;seek(m,target);play(m);vol(m,LEVEL,1300);vol(o,0,1300);cur=m;setTimeout(()=>{if(cur!==o)el[o].pause()},1400)}}
-  };
+  document.addEventListener('visibilitychange',()=>{if(!on)return;if(document.hidden)au.pause();else{const p=au.play();p&&p.catch&&p.catch(()=>{})}});
+  return {auto:()=>{if(wanted)start()}};
 })();
 
 /* ---------- page turning ---------- */
@@ -538,7 +524,6 @@ function sync(){
   hint.textContent=turned===0?'Tap the seal to open':'Tap the page to turn';
   prevB.disabled=turned===0;nextB.disabled=turned>=N;
   [...dots.children].forEach((d,i)=>d.setAttribute('aria-current',i===dot));
-  music.page(turned,N);
 }
 function flip(i,fwd){
   const l=leaves[i];l.classList.remove('flip');void l.offsetWidth;l.classList.add('flip');
