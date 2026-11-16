@@ -197,14 +197,14 @@ body{
 .info{position:absolute;left:50%;translate:-50% 0;z-index:10;display:flex;flex-direction:column;align-items:center;text-align:center;color:var(--c)}
 .info .ttl{margin:0;font-family:var(--display);font-weight:400;font-size:calc(var(--pw)*var(--ts,.125)*var(--k,1));line-height:1.14;letter-spacing:.02em;color:var(--ct);white-space:nowrap}
 .info .ttl span{display:inline-block}
-.when{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:1.1em;width:100%;margin-top:calc(var(--pw)*.032);
+.when{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:1.1em;width:100%;margin-top:calc(var(--pw)*.032*var(--g,1));
   font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--fs,.026)*var(--k,1));letter-spacing:.2em;line-height:1.55;text-transform:uppercase}
 .when .side{display:flex;align-items:center;justify-content:center;padding:.75em 0 .75em .2em;border-block:1px solid color-mix(in srgb,currentColor 55%,transparent)}
 .when .date{display:flex;flex-direction:column;align-items:center;line-height:1.25;padding-left:.2em}
 .when .date i{font-family:var(--serif);font-style:normal;font-weight:500;font-size:3.3em;line-height:.95;letter-spacing:0;margin-left:-.06em;color:var(--ct);font-variant-numeric:lining-nums}
-.info .then{margin:calc(var(--pw)*.03) 0 0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:calc(var(--pw)*.044*var(--k,1));line-height:1.2}
-.info .venue{margin:calc(var(--pw)*.026) 0 0;font-family:var(--display);font-size:calc(var(--pw)*.043*var(--k,1));line-height:1.2;letter-spacing:.02em}
-.info .addr{margin:calc(var(--pw)*.012) 0 0;padding-left:.18em;font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--fs,.026)*var(--k,1));letter-spacing:.18em;line-height:1.6;text-transform:uppercase;text-wrap:balance}
+.info .then{margin:calc(var(--pw)*.03*var(--g,1)) 0 0;font-family:var(--serif);font-style:italic;font-weight:600;font-size:calc(var(--pw)*.044*var(--k,1));line-height:1.2}
+.info .venue{margin:calc(var(--pw)*.026*var(--g,1)) 0 0;font-family:var(--display);font-size:calc(var(--pw)*var(--vs,.043)*var(--k,1));line-height:1.2;letter-spacing:.02em}
+.info .addr{margin:calc(var(--pw)*.012) 0 0;padding-left:.18em;font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--as,var(--fs,.026))*var(--k,1));letter-spacing:.18em;line-height:1.6;text-transform:uppercase;text-wrap:balance}
 .info svg{display:block;margin-top:calc(var(--pw)*.024);overflow:visible}
 .dr{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-dasharray:1}
 .leaf.play .info .ttl span{animation:letter 1.6s ease-out both;animation-delay:calc(.7s + var(--i)*.1s)}
@@ -376,7 +376,7 @@ const beads=(cx,cy,n,rad,r,attr='')=>Array.from({length:n},(_,i)=>{const a=i*2*M
 /* ---------- event cards: the supplied artwork in layers, with live text set on top ---------- */
 /* layer tuple: [file, x, y, w, h, css custom properties, extra] in card units; strings are raw markup */
 const drop=(a,d,ph,dl)=>`--in:enter-drop;--loop:sway;--a:${a}deg;--d:${d}s;--ph:-${ph}s;--dl:${dl}s`;
-const info=o=>`<div class="info" style="top:${o.top}%;width:${o.w}%;--c:${o.c};--ct:${o.ct||o.c};${o.ts?`--ts:${o.ts};`:''}${o.fs?`--fs:${o.fs};`:''}${o.k?`--k:${o.k};`:''}">`+
+const info=o=>`<div class="info" style="top:${o.top}%;width:${o.w}%;--c:${o.c};--ct:${o.ct||o.c};${o.ts?`--ts:${o.ts};`:''}${o.fs?`--fs:${o.fs};`:''}${o.k?`--k:${o.k};`:''}${o.x||''}">`+
   `<h2 class="ttl">${o.title}</h2>`+
   `<div class="when"><span class="side l">${o.day}</span><span class="date"><b>Dec</b><i>${o.dd}</i><b>2026</b></span><span class="side r"><span>${o.time}</span></span></div>`+
   (o.then?`<p class="then">${o.then}</p>`:'')+(o.mid||'')+`<p class="venue">${o.venue}</p><p class="addr">${o.addr}</p></div>`;
@@ -397,7 +397,7 @@ const CARDS=[
    ['umbrella',80.73,253.64,120,165.55,'--in:enter-rise;--loop:sway;--a:3.2deg;--d:3.6s;--o:50% 100%;--dl:.5s'],
    ['leafL',-.55,232.64,102.27,186.55,'--in:enter-left;--loop:sway;--a:1.3deg;--d:5.6s;--o:0% 100%;--s:1.05;--dl:.35s'],
    ['leafR',207.27,252,90.82,167.18,'--in:enter-right;--loop:sway;--a:1.3deg;--d:6.4s;--ph:-2s;--o:100% 100%;--s:1.05;--dl:.45s'],
-   info({top:18.4,w:59,c:'#4f7023',ct:'#e8497f',ts:.068,title:'Haldi &amp;<br>Bangle Shastra',day:'Thursday',dd:'03',time:'10 AM<br>onwards',then:'Followed by lunch',venue:'Diya, The Leela Palace',addr:'HAL Old Airport Rd, Kodihalli, Bengaluru'}),
+   info({top:18.2,w:56,c:'#4f7023',ct:'#e8497f',ts:.066,k:.88,x:'--vs:.039;--as:.0235;--g:1.3;',title:'Haldi &amp;<br>Bangle Shastra',day:'Thursday',dd:'03',time:'10 AM<br>onwards',then:'Followed by lunch',venue:'Diya, The Leela Palace',addr:'HAL Old Airport Rd, Kodihalli, Bengaluru'}),
   ]},
  {id:'mehendi',W:297.75,H:419.25,
   fx:{petals:{n:8,colors:['#ffd1dc','#f8a9c0','#fbe3ea'],wind:-3,size:.7},dust:{n:8,color:'255,214,140'}},
