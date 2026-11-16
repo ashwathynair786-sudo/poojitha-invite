@@ -12,7 +12,7 @@
 <meta property="og:description" content="You are invited. Tap to open the invitation.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500;1,600&family=Jost:wght@400;500&family=Marcellus&family=Pinyon+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500;1,600&family=Jost:wght@400;500&family=Marcellus&family=Great+Vibes&display=swap">
 <style>
 /* Layout: one velvet-bound book centred on a dark table; leaves hinge on the left edge and turn in 3D. */
 :root{
@@ -27,7 +27,7 @@
   --paper-shade:#eadcc0;
   --ink:#6b1228;        /* names */
   --ink-soft:#7d5a3a;   /* supporting lines */
-  --script:"Pinyon Script","Snell Roundhand","Apple Chancery",cursive;
+  --script:"Great Vibes","Snell Roundhand","Apple Chancery",cursive;
   --serif:"Cormorant Garamond","Iowan Old Style","Palatino Linotype",Georgia,serif;
   --display:"Marcellus","Cinzel","Trajan Pro",Georgia,serif;
   --caps:"Jost","Avenir Next","Century Gothic","Gill Sans",sans-serif;
@@ -131,7 +131,7 @@ body{
   gap:calc(var(--pw)*.012);text-align:center;
 }
 .who .name{
-  margin:0;font-family:var(--script);font-weight:400;font-size:calc(var(--pw)*.215);line-height:1.05;padding:0 .12em;
+  margin:0;font-family:var(--script);font-weight:400;font-size:calc(var(--pw)*.2);line-height:1.15;padding:0 .14em;
   color:var(--ink);background:linear-gradient(100deg,var(--ink) 0 42%,#d9a441 50%,var(--ink) 58% 100%) 100% 0/300% 100%;
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
 }
@@ -172,7 +172,7 @@ body{
 @keyframes enter-stamp{from{opacity:0;scale:1.35}}
 @keyframes sway{from{rotate:calc(var(--a,2deg)*-1)}to{rotate:var(--a,2deg)}}
 @keyframes drift{from{transform:translate(-8%,4%)}to{transform:translate(34%,-6%)}}
-@keyframes driftR{from{transform:translate(6%,-5%)}to{transform:translate(-36%,6%)}}
+@keyframes driftR{from{transform:translate(8%,-5%)}to{transform:translate(-14%,6%)}}
 @keyframes lamp{from{filter:drop-shadow(0 0 .3em rgba(255,170,70,.4)) brightness(1)}to{filter:drop-shadow(0 0 .9em rgba(255,195,100,.8)) brightness(1.1)}}
 .glint{
   position:absolute;pointer-events:none;-webkit-mask-size:100% 100%;mask-size:100% 100%;transform-origin:50% 100%;scale:var(--s,1);mix-blend-mode:screen;
@@ -189,7 +189,7 @@ body{
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.16) translate(-2%,1.5%)}}
 @keyframes halo{from{box-shadow:0 0 0 .5em rgba(235,208,144,.14),0 0 2em rgba(255,200,100,.25)}to{box-shadow:0 0 0 1.1em rgba(235,208,144,.2),0 0 4.5em rgba(255,200,100,.6)}}
 .info{position:absolute;left:50%;translate:-50% 0;z-index:10;display:flex;flex-direction:column;align-items:center;text-align:center;color:var(--c)}
-.info .ttl{margin:0;font-family:var(--display);font-weight:400;font-size:calc(var(--pw)*var(--ts,.125)*var(--k,1));line-height:1;letter-spacing:.02em;color:var(--ct);white-space:nowrap}
+.info .ttl{margin:0;font-family:var(--display);font-weight:400;font-size:calc(var(--pw)*var(--ts,.125)*var(--k,1));line-height:1.14;letter-spacing:.02em;color:var(--ct);white-space:nowrap}
 .info .ttl span{display:inline-block}
 .when{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:1.1em;width:100%;margin-top:calc(var(--pw)*.032);
   font-family:var(--caps);font-weight:500;font-size:calc(var(--pw)*var(--fs,.026)*var(--k,1));letter-spacing:.2em;line-height:1.55;text-transform:uppercase}
@@ -392,7 +392,7 @@ const CARDS=[
    ['umbrella',80.73,253.64,120,165.55,'--in:enter-rise;--loop:sway;--a:3.2deg;--d:3.6s;--o:50% 100%;--dl:.5s'],
    ['leafL',-.55,232.64,102.27,186.55,'--in:enter-left;--loop:sway;--a:1.3deg;--d:5.6s;--o:0% 100%;--s:1.05;--dl:.35s'],
    ['leafR',207.27,252,90.82,167.18,'--in:enter-right;--loop:sway;--a:1.3deg;--d:6.4s;--ph:-2s;--o:100% 100%;--s:1.05;--dl:.45s'],
-   info({top:18.6,w:59,c:'#4f7023',ct:'#e8497f',title:'Haldi',day:'Thursday',dd:'03',time:'10 AM<br>onwards',then:'Followed by lunch',venue:'Leela Palace',addr:'HAL Old Airport Rd, Kodihalli, Bengaluru'}),
+   info({top:18.4,w:59,c:'#4f7023',ct:'#e8497f',ts:.068,title:'Haldi &amp;<br>Bangle Shastra',day:'Thursday',dd:'03',time:'10 AM<br>onwards',then:'Followed by lunch',venue:'Diya, The Leela Palace',addr:'HAL Old Airport Rd, Kodihalli, Bengaluru'}),
   ]},
  {id:'mehendi',W:297.75,H:419.25,
   fx:{petals:{n:8,colors:['#ffd1dc','#f8a9c0','#fbe3ea'],wind:-3,size:.7},dust:{n:8,color:'255,214,140'}},
@@ -404,7 +404,7 @@ const CARDS=[
    ['string',-.55,-.55,154.09,141,'--in:enter-drop;--dl:.2s'],
    ['lanternA',-.55,-.55,154.09,141,'--a:2.2deg;--d:4.6s;--o:31% 31.9%;--dl:.3s','glow'],
    ['lanternB',-.55,-.55,154.09,141,'--a:1.8deg;--d:5.4s;--ph:-2s;--o:80.2% 0%;--dl:.2s','glow'],
-   info({top:33,w:60,c:'#ebd090',title:'Mehendi',day:'Thursday',dd:'03',time:'5 PM<br>onwards',then:'Followed by dinner',mid:rule,venue:'Leela Palace',addr:'HAL Old Airport Rd, Kodihalli, Bengaluru'}),
+   info({top:33,w:60,c:'#ebd090',title:'Mehendi',day:'Thursday',dd:'03',time:'5 PM<br>onwards',then:'Followed by dinner',mid:rule,venue:'Diya, The Leela Palace',addr:'HAL Old Airport Rd, Kodihalli, Bengaluru'}),
   ]},
  {id:'muhurtam',W:297.75,H:453.75,
   fx:{petals:{n:6,colors:['#ffffff','#f7c6d9','#ffcc66'],wind:.3,size:.7},dust:{n:12,color:'255,205,100'}},
@@ -441,7 +441,7 @@ for(const c of CARDS){
   h+=`</div></div>`+(c===CARDS[CARDS.length-1]?`<div class="face back velvet rearface">${$('.cover svg.cloth').outerHTML}</div>`:`<div class="face back paper">${$('.names .back').innerHTML}</div>`);
   leaf.innerHTML=h;leaf._fx=c.fx;book.appendChild(leaf);
 }
-document.querySelectorAll('.info .ttl').forEach(t=>{t.innerHTML=[...t.textContent].map((ch,i)=>`<span style="--i:${i}">${ch}</span>`).join('')});
+document.querySelectorAll('.info .ttl').forEach(t=>{let i=0;t.innerHTML=t.innerHTML.split(/<br\s*\/?>/).map(line=>[...line.replace(/&amp;/g,'&')].map(ch=>ch===' '?' ':`<span style="--i:${i++}">${ch==='&'?'&amp;':ch}</span>`).join('')).join('<br>')});
 $('.names')._fx={petals:{n:6,colors:['#b3123f','#d8436d','#f08aa6','#e7b24c'],wind:.5,size:.85},dust:{n:16,color:'214,160,60'}};
 
 /* ---------- petals, dust, fireflies ---------- */
@@ -513,7 +513,7 @@ const music=(()=>{
 /* turned = leaves lying on the left. With all N turned the book is closed, showing the velvet reverse of the last page. */
 let turned=0,hinted=0;const LAST=N-1;
 const hint=$('#hint'),nav=$('#nav'),dots=$('#dots'),prevB=$('#prev'),nextB=$('#next');
-const names=['Cover','Sonika and Dilip','Haldi','Mehendi','Muhurtam','Reception','Back cover'];
+const names=['Cover','Sonika and Dilip','Haldi and Bangle Shastra','Mehendi','Muhurtam','Reception','Back cover'];
 names.forEach((n,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',n);b.onclick=e=>{e.stopPropagation();go(i)};dots.appendChild(b)});
 const rest=(l,i)=>{const t=i<turned;l.style.transform=`translateZ(${t?i+1:N-i}px) rotateY(${t?-180:0}deg)`};
 function sync(){
